@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lesson4
 {
@@ -11,8 +7,76 @@ namespace Lesson4
 
         static void Main(string[] args)
         {
-           var array=CreateArray();
-           InputData(ref array);
+            var tmsArray = CreateArray();
+            InputData(ref tmsArray);
+            ViewArray(ref tmsArray);
+
+            Console.WriteLine("Сделайте ваш выбор:");
+            Console.WriteLine("1) Найти количество положительных/отрицательных чисел в матрице");
+            Console.WriteLine("2) Сортировка элементов матрицы построчно");
+            Console.WriteLine("3) Инверсия элементов матрицы построчно");
+            Console.WriteLine("4) Выход");
+            Console.Write("\r\n Выберите действие : ");
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    CountPositiveOrNegative(ref tmsArray);
+
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        public static void CountPositiveOrNegative(ref decimal[,] tmsArray)
+        {
+            int positive = 0;
+            int negative = 0;
+            int rows = tmsArray.GetUpperBound(0) + 1;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < tmsArray.Length / rows; j++)
+                {
+                    var result = Math.Sign(tmsArray[i, j]);
+
+                    if (result > 0)
+                    {
+                        positive++;
+                    }
+                    else
+                    {
+                        if (result < 0)
+                        {
+                            negative++;
+                        }
+                    }
+
+                }
+            }
+            Console.WriteLine($"Положительных чисел {positive}. Отрицательных {negative}");
+            Console.ReadLine();
+        }
+
+
+        public static void ViewArray(ref decimal[,] tmsArray)
+        {
+           Console.Clear(); 
+            int rows = tmsArray.GetUpperBound(0) + 1;
+
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < tmsArray.Length / rows; j++)
+                {
+                    Console.Write($"{tmsArray[i, j]} \t");
+                }
+                Console.WriteLine();
+            }
         }
 
         public static decimal[,] CreateArray()
@@ -29,34 +93,31 @@ namespace Lesson4
                 return null;
             }
 
-            Console.WriteLine($"Создаем массив {rowsResult}х{columnsResult}");
-            decimal[,] tmsArray = new decimal[rowsResult, columnsResult];
-
-            return tmsArray;
+            return new decimal[rowsResult, columnsResult];
         }
-        public static void InputData(ref decimal[,] array)
+        public static void InputData(ref decimal[,] tmsArray)
         {
-             int rows = array.GetUpperBound(0) + 1;
+            int rows = tmsArray.GetUpperBound(0)+1 ;
 
-            for (int j = 0; j < array.Length / rows;)
+            for (int i = 0; i <  rows; i++)
             {
-                for (int i = 0; i < rows;)
+                for (int j = 0; j < tmsArray.Length/ rows;)
                 {
-                    Console.WriteLine($"Для строки {j + 1}, столбца {i + 1} введите число");
+                    ViewArray(ref tmsArray);
+                    Console.WriteLine($"Для строки {i + 1}, столбца {j + 1} введите число");
 
                     if (decimal.TryParse(Console.ReadLine(), out decimal inputRowsValue))
                     {
-                        array[j, i] = inputRowsValue;
-                        i++;
+                        tmsArray[i, j] = inputRowsValue;
+                        j++;
                     }
                     else
                     {
                         Console.WriteLine("Ошибка, вввода данных.Попробуем еще раз.");
+                        Console.ReadKey();
                     }
                 }
-                j++;
             }
-
-            Console.ReadKey();
-        }}
+        }
+    }
 }
