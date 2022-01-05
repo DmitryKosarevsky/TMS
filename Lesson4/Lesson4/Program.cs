@@ -1,123 +1,107 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
-namespace Lesson4
+namespace ConsoleApp1
 {
-    internal class Program
+    class Program
     {
-
         static void Main(string[] args)
         {
-            var tmsArray = CreateArray();
-            InputData(ref tmsArray);
-            ViewArray(ref tmsArray);
+            var userInput = string.Empty;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Введите строку содержащую буквы латинского алфавита, знаки препинания и цифры : ");
+                userInput = Console.ReadLine();
+            } while (string.IsNullOrEmpty(userInput));
 
-            Console.WriteLine("Сделайте ваш выбор:");
-            Console.WriteLine("1) Найти количество положительных/отрицательных чисел в матрице");
-            Console.WriteLine("2) Сортировка элементов матрицы построчно");
-            Console.WriteLine("3) Инверсия элементов матрицы построчно");
-            Console.WriteLine("4) Выход");
-            Console.Write("\r\n Выберите действие : ");
-            switch (Console.ReadLine())
+            Console.WriteLine("Спасибо за строку.\nВ строке мы должны :");
+            Console.WriteLine("1) Найти слова, содержащие максимальное количество цифр.");
+            Console.WriteLine("2) Найти самое длинное слово и определить, сколько раз оно встретилось в тексте.");
+            Console.WriteLine("3) Заменить цифры от 0 до 9 на слова «ноль», «один», …, «девять».");
+            Console.WriteLine("4) Вывести на экран сначала вопросительные, а затем восклицательные предложения.");
+            Console.WriteLine("5) Вывести на экран только предложения, не содержащие запятых.");
+            Console.WriteLine("6) Найти слова, начинающиеся и заканчивающиеся на одну и ту же букву.");
+            Console.WriteLine("\nВведите цифру : ");
+
+            var userChoice = Console.ReadLine();
+
+            switch (userChoice)
             {
                 case "1":
-                    CountPositiveOrNegative(ref tmsArray);
+                    string[] arrWords = userInput.Split(new char[] { ' ', ':', '!', '?', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    var arrSorted = arrWords.Where(x => double.TryParse(x, out double userInputResult)).OrderByDescending(s => s.Length).ToList();
 
+                    if (arrSorted.Count > 0)
+                    {
+                        var maxLength = arrSorted.FirstOrDefault().Length;
+                        Console.WriteLine("Самые длинные числа :" + string.Join(", ", arrSorted.Where(x => x.Length == maxLength)));
+                    }
+                    else
+                    {
+                        Console.WriteLine("В строке нет чисел");
+                    }
                     break;
                 case "2":
+                    string[] arrLongWord = userInput.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    var longWord = arrLongWord.OrderByDescending(x => x.Length).FirstOrDefault();
+                    if (longWord != null)
+                    {
+                        Console.WriteLine($"Самое длинное слово : {longWord} встретилось {arrLongWord?.Where(x => x.Contains(longWord)).Count()} раз.");
+                    }
                     break;
                 case "3":
+                    Console.WriteLine(userInput
+                        .Replace("1", "один ")
+                        .Replace("2", "два ")
+                        .Replace("3", "три ")
+                        .Replace("4", "четыре ")
+                        .Replace("5", "пять ")
+                        .Replace("6", "шесть ")
+                        .Replace("7", "семь ")
+                        .Replace("8", "восемь ")
+                        .Replace("9", "девять ")
+                        .Replace("0", "ноль "));
+                    break;
+                case "4":
+                    Regex re = new Regex(@"(\w+\s*)+[!?]");
+                    List<string> strings = new List<string>();
+                    foreach (Match item in re.Matches(userInput))
+                    {
+                        strings.Add(item.Value);
+                    }
+                    foreach (string item in strings.OrderBy((x) => !x.EndsWith("?")))
+                    {
+                        Console.WriteLine(item);
+                    }
+                    Console.ReadKey();
+                    break;
+                case "5":
+                    string[] arraySentence = userInput.Split(new char[] { '.', '!', '?' });
+                    foreach (string item in arraySentence)
+                    {
+                        if (!item.Contains(','))
+                        {
+                            Console.WriteLine(item);
+                        }
+                    }
+                    break;
+                case "6":
+                    string[] arrWord = userInput.Split(new char[] { '.', ',', '!', '?', ' ' });
+
+                    foreach (var item in arrWord)
+                    {
+                        if (item[0] == item[item.Length - 1]) Console.WriteLine(item);
+                    }
+
                     break;
                 default:
                     break;
             }
-        }
 
-
-        public static void CountPositiveOrNegative(ref decimal[,] tmsArray)
-        {
-            int positive = 0;
-            int negative = 0;
-            int rows = tmsArray.GetUpperBound(0) + 1;
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < tmsArray.Length / rows; j++)
-                {
-                    var result = Math.Sign(tmsArray[i, j]);
-
-                    if (result > 0)
-                    {
-                        positive++;
-                    }
-                    else
-                    {
-                        if (result < 0)
-                        {
-                            negative++;
-                        }
-                    }
-
-                }
-            }
-            Console.WriteLine($"Положительных чисел {positive}. Отрицательных {negative}");
             Console.ReadLine();
-        }
-
-
-        public static void ViewArray(ref decimal[,] tmsArray)
-        {
-           Console.Clear(); 
-            int rows = tmsArray.GetUpperBound(0) + 1;
-
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < tmsArray.Length / rows; j++)
-                {
-                    Console.Write($"{tmsArray[i, j]} \t");
-                }
-                Console.WriteLine();
-            }
-        }
-
-        public static decimal[,] CreateArray()
-        {
-            Console.WriteLine("Введите количество строк в массиве");
-            var rows = Console.ReadLine();
-            Console.WriteLine("Введите количество столбцов в массиве");
-            var columns = Console.ReadLine();
-
-            if (!int.TryParse(rows, out int rowsResult) || !int.TryParse(columns, out int columnsResult) || rowsResult<=1 || columnsResult<=1)
-            {
-                Console.WriteLine("Ошибка, необходимо ввести число >=1");
-                Console.ReadKey();
-                return null;
-            }
-
-            return new decimal[rowsResult, columnsResult];
-        }
-        public static void InputData(ref decimal[,] tmsArray)
-        {
-            int rows = tmsArray.GetUpperBound(0)+1 ;
-
-            for (int i = 0; i <  rows; i++)
-            {
-                for (int j = 0; j < tmsArray.Length/ rows;)
-                {
-                    ViewArray(ref tmsArray);
-                    Console.WriteLine($"Для строки {i + 1}, столбца {j + 1} введите число");
-
-                    if (decimal.TryParse(Console.ReadLine(), out decimal inputRowsValue))
-                    {
-                        tmsArray[i, j] = inputRowsValue;
-                        j++;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка, вввода данных.Попробуем еще раз.");
-                        Console.ReadKey();
-                    }
-                }
-            }
         }
     }
 }
