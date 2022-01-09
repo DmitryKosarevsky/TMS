@@ -79,7 +79,7 @@ namespace ConsoleApp1
                     Console.ReadKey();
                     break;
                 case "5":
-                    string[] arraySentence = userInput.Split(new char[] { '.', '!', '?' });
+                    string[] arraySentence = userInput.Split(new char[] { '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string item in arraySentence)
                     {
                         if (!item.Contains(','))
