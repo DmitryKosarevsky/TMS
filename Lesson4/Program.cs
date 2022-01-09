@@ -32,9 +32,9 @@ namespace Lesson4
                     {
                         for (int j = 0; j < tmsArray.Length / rows; j++)
                         {
-                            for (var g= 0; g < tmsArray.Length / rows - j -1; g++)
+                            for (var g = 0; g < tmsArray.Length / rows - j - 1; g++)
                             {
-                                if (tmsArray[i, g] > tmsArray[i, g+1])
+                                if (tmsArray[i, g] > tmsArray[i, g + 1])
                                 {
                                     Swap(ref tmsArray[i, g], ref tmsArray[i, g + 1]);
                                 }
@@ -71,9 +71,9 @@ namespace Lesson4
                         decimal temp;               // вспомогательный элемент для обмена значениями
                         for (int z = 0; z < k; z++)
                         {
-                            temp = tmsArray[i,z];
-                            tmsArray[i, z] = tmsArray[i, l - z -1];
-                            tmsArray[i, l - z- 1] = temp;
+                            temp = tmsArray[i, z];
+                            tmsArray[i, z] = tmsArray[i, l - z - 1];
+                            tmsArray[i, l - z - 1] = temp;
                         }
                     }
                     Console.WriteLine("Вывожу массив инвертированный построчно");
@@ -179,6 +179,6 @@ namespace Lesson4
                 }
             }
         }
-     
+
     }
 }
