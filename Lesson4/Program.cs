@@ -4,7 +4,6 @@ namespace Lesson4
 {
     internal class Program
     {
-
         static void Main(string[] args)
         {
             var tmsArray = CreateArray();
@@ -24,7 +23,6 @@ namespace Lesson4
             {
                 case "1":
                     CountPositiveOrNegative(ref tmsArray);
-
                     break;
                 case "2":
                     int rows = tmsArray.GetUpperBound(0) + 1;
@@ -60,7 +58,6 @@ namespace Lesson4
                     }
                     Console.WriteLine("Вывожу отсортированный массив по убыванию");
                     ViewArray(ref tmsArray);
-                    Console.ReadLine();
                     break;
                 case "3":
                     int row = tmsArray.GetUpperBound(0) + 1;
@@ -68,27 +65,24 @@ namespace Lesson4
                     {
                         int l = tmsArray.Length / row; // длина массива
                         int k = l / 2;          // середина массива
-                        decimal temp;               // вспомогательный элемент для обмена значениями
-                        for (int z = 0; z < k; z++)
+                        for (int j = 0; j < k; j++)
                         {
-                            temp = tmsArray[i, z];
-                            tmsArray[i, z] = tmsArray[i, l - z - 1];
-                            tmsArray[i, l - z - 1] = temp;
+                            Swap(ref tmsArray[i, j], ref tmsArray[i, l - j - 1]);
                         }
                     }
                     Console.WriteLine("Вывожу массив инвертированный построчно");
                     ViewArray(ref tmsArray);
-                    Console.ReadLine();
                     break;
                 default:
                     break;
             }
+            Console.ReadLine();
         }
 
         //метод обмена элементов
         static void Swap(ref decimal e1, ref decimal e2)
         {
-            var temp = e1;
+            var temp = e1; // вспомогательный элемент для обмена значениями
             e1 = e2;
             e2 = temp;
         }
@@ -119,9 +113,7 @@ namespace Lesson4
                 }
             }
             Console.WriteLine($"Положительных чисел {positive}. Отрицательных {negative}");
-            Console.ReadLine();
         }
-
 
         public static void ViewArray(ref decimal[,] tmsArray)
         {
