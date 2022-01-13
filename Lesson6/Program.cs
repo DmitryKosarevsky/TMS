@@ -11,14 +11,7 @@ namespace Lesson6
             Console.Clear();
             ViewArray(ref tmsArray);
 
-            const string textInfo =
-                "Сделайте ваш выбор:\n" +
-                "1) Найти количество положительных/отрицательных чисел в матрице\n" +
-                "2) Сортировка по элементов матрицы построчно\n" +
-                "3) Инверсия элементов матрицы построчно\n" +
-                "4) Выход\n\n" +
-                "Выберите действие: ";
-            Console.Write(textInfo);
+            ShowMenu();
 
             switch (Console.ReadLine())
             {
@@ -50,7 +43,19 @@ namespace Lesson6
             Console.ReadLine();
         }
 
-        /// <summary>Метод инветрирования массива</summary>
+        private static void ShowMenu()
+        {
+            const string textInfo =
+                "Сделайте ваш выбор:\n" +
+                "1) Найти количество положительных/отрицательных чисел в матрице\n" +
+                "2) Сортировка по элементов матрицы построчно\n" +
+                "3) Инверсия элементов матрицы построчно\n" +
+                "4) Выход\n\n" +
+                "Выберите действие: ";
+            Console.Write(textInfo);
+        }
+
+        /// <summary>Метод инвертирования массива</summary>
         /// <param name="tmsArray">массив по ссылке</param>
         /// <returns></returns>
         private static void InvertArray(ref decimal[,] tmsArray)
@@ -133,7 +138,6 @@ namespace Lesson6
                             negative++;
                         }
                     }
-
                 }
             }
             return (positive, negative);
@@ -188,7 +192,7 @@ namespace Lesson6
                     }
                     else
                     {
-                        Console.WriteLine("Ошибка, вввода данных.Попробуем еще раз.");
+                        Console.WriteLine("Ошибка ввода данных.Попробуем еще раз.");
                         Console.ReadKey();
                     }
                 }
